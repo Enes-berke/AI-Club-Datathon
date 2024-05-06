@@ -1,0 +1,50 @@
+==> Gradient Boosting Regressor: <== AÇIKLAMA
+
+
+
+Link -> https://chat.openai.com/share/a2f0f287-4a35-4ac8-9147-d43364e5c2c4
+
+
+
+Tabii, Gradient Boosting Regressor, toplu öğrenme yöntemlerinden biri olan ve ardışık olarak zayıf tahmincileri (genellikle karar ağaçları) bir araya getirerek güçlü bir tahminci oluşturan bir yöntemdir. Gradient boosting, bir önceki modelin hatalarını düzeltmek için yeni modeller ekler. Bu nedenle, her ardışık model, önceki modelin yapamadığı hataları düzeltmek için eğitilir.
+
+Şimdi Gradient Boosting Regressor kullanarak gelecekteki fiyatları tahmin etmek için yazdığımız kodun detaylarını açıklayalım:
+
+1. **Modelin Oluşturulması ve Eğitilmesi:**
+```python
+from sklearn.ensemble import GradientBoostingRegressor
+
+# Modelin oluşturulması
+model = GradientBoostingRegressor()
+```
+Burada, `GradientBoostingRegressor` sınıfından bir model oluşturuyoruz. Varsayılan parametrelerle bir model oluşturuyoruz, ancak isterseniz bu parametreleri özelleştirebilirsiniz.
+
+2. **Modelin Eğitilmesi:**
+```python
+model.fit(X, y)
+```
+`fit` yöntemiyle, modeli bağımsız değişkenler (X) ve bağımlı değişkenler (y) üzerinde eğitiyoruz. Bu, modelin veri seti üzerinde örüntüleri öğrenmesini sağlar.
+
+3. **Gelecekteki Verilerin Tahmin Edilmesi:**
+```python
+gelecek_veri = X.tail(201)
+tahminler = model.predict(gelecek_veri)
+```
+`predict` yöntemiyle, modeli kullanarak gelecekteki verileri tahmin ediyoruz. Burada, en son 201 gözlemi kullanarak gelecekteki fiyatları tahmin ediyoruz.
+
+4. **RMSE Değerinin Hesaplanması:**
+```python
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y[-200:], tahminler[:-1])
+rmse = np.sqrt(mse)
+```
+Gerçek değerler ile tahmin edilen değerler arasındaki ortalama karesel hata (MSE) hesaplanır ve bu değerin karekökü alınarak kök ortalama kare hata (RMSE) elde edilir. Bu, modelin performansını ölçmek için kullanılır.
+
+5. **Sonuçların Yazdırılması:**
+```python
+print("Gradient Boosting Regressor ile Gelecekteki Fiyat Tahminleri:")
+np.set_printoptions(precision=7)
+print(tahminler)
+print("RMSE Değeri:", rmse)
+```
+Son olarak, tahmin edilen fiyatları ve RMSE değerini yazdırıyoruz. Tahminlerin formatını 7 basamaklı virgülden sonra biçimlendiriyoruz (`np.set_printoptions(precision=7)`). Bu, tahminlerin daha okunabilir olmasını sağlar.

@@ -1,0 +1,50 @@
+==> Random Forest Regressor: <== AÇIKLAMA
+
+
+
+Link -> https://chat.openai.com/share/a2f0f287-4a35-4ac8-9147-d43364e5c2c4
+
+
+
+Random Forest Regressor, bir topluluk öğrenme algoritması olan ve birden fazla karar ağacının tahminlerini bir araya getirerek daha güçlü bir tahminci oluşturan bir algoritmadır. Her bir ağaç, rastgele örneklemlenen veri seti ve rastgele özelliklerle eğitilir. Ardından, ağaçların tahminleri ortalaması alınarak son tahmin yapılır. Bu sayede, overfitting riski azalır ve genelleme yeteneği artar.
+
+Şimdi Random Forest Regressor kullanarak gelecekteki fiyatları tahmin etmek için yazdığımız kodun detaylarını açıklayalım:
+
+1. **Modelin Oluşturulması ve Eğitilmesi:**
+```python
+from sklearn.ensemble import RandomForestRegressor
+
+# Modelin oluşturulması
+model = RandomForestRegressor()
+```
+Burada, `RandomForestRegressor` sınıfından bir model oluşturuyoruz. Varsayılan parametrelerle bir model oluşturuyoruz, ancak isterseniz bu parametreleri özelleştirebilirsiniz.
+
+2. **Modelin Eğitilmesi:**
+```python
+model.fit(X, y)
+```
+`fit` yöntemiyle, modeli bağımsız değişkenler (X) ve bağımlı değişkenler (y) üzerinde eğitiyoruz. Bu, modelin veri seti üzerinde örüntüleri öğrenmesini sağlar.
+
+3. **Gelecekteki Verilerin Tahmin Edilmesi:**
+```python
+gelecek_veri = X.tail(201)
+tahminler = model.predict(gelecek_veri)
+```
+`predict` yöntemiyle, modeli kullanarak gelecekteki verileri tahmin ediyoruz. Burada, en son 201 gözlemi kullanarak gelecekteki fiyatları tahmin ediyoruz.
+
+4. **RMSE Değerinin Hesaplanması:**
+```python
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y[-200:], tahminler[:-1])
+rmse = np.sqrt(mse)
+```
+Gerçek değerler ile tahmin edilen değerler arasındaki ortalama karesel hata (MSE) hesaplanır ve bu değerin karekökü alınarak kök ortalama kare hata (RMSE) elde edilir. Bu, modelin performansını ölçmek için kullanılır.
+
+5. **Sonuçların Yazdırılması:**
+```python
+print("Random Forest Regressor ile Gelecekteki Fiyat Tahminleri:")
+np.set_printoptions(precision=7)
+print(tahminler)
+print("RMSE Değeri:", rmse)
+```
+Son olarak, tahmin edilen fiyatları ve RMSE değerini yazdırıyoruz. Tahminlerin formatını 7 basamaklı virgülden sonra biçimlendiriyoruz (`np.set_printoptions(precision=7)`). Bu, tahminlerin daha okunabilir olmasını sağlar.

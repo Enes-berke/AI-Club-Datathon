@@ -1,0 +1,35 @@
+==  Linear Regression == KOD 
+
+
+
+mport pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Veri setini yükleme ve ön işleme
+veri = pd.read_csv(r"C:/Users/ASUS/Desktop/AI CLUB DATATHON/CSV/crp_ail.csv")
+veri['open'] = veri['open'].str.replace('"', '').astype(float)
+veri['high'] = veri['high'].str.replace('"', '').astype(float)
+veri['low'] = veri['low'].str.replace('"', '').astype(float)
+veri['close'] = veri['close'].str.replace('"', '').astype(float)
+
+# Gelecekteki fiyatı oluşturma (bir sonraki günün kapanış fiyatı)
+veri['FuturePrice'] = veri['low'].shift(-1)
+
+# Son satırı silme (çünkü gelecekteki fiyatı olmayan bir tarih var)
+veri = veri.dropna()
+
+# Son 1000 veriyi seçme
+X = veri[['open', 'low', 'high', 'close']].tail(11000)  # Bağımsız değişkenler (Açılış, Düşük, Yüksek, Kapanış)
+y = veri['FuturePrice'].tail(11000)  # Bağımlı değişken (Gelecekteki fiyat)
+
+# Modelin oluşturulması ve eğitilmesi
+model = LinearRegression()
+model.fit(X, y)
+
+# Gelecekteki 200 veriyi tahmin etme
+gelecek_veri = X.tail(201)
+tahminler = model.predict(gelecek_veri)
+
+print("Gelecekteki Fiyat Tahminleri:")
+print(tahminler)

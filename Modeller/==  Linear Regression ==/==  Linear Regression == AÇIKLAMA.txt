@@ -1,0 +1,26 @@
+==  Linear Regression == AÇIKLAMA
+
+
+Bu kod, bir hisse senedinin fiyatlarını tahmin etmek için basit bir makine öğrenimi modeli olan doğrusal regresyonu kullanıyor. İşte kodun ayrıntılı açıklaması:
+
+1. İlk olarak, gerekli kütüphaneler `pandas`, `numpy` ve `LinearRegression` sınıfı için `sklearn.linear_model` içinden alınır.
+
+2. `pd.read_csv()` fonksiyonu kullanılarak bir CSV dosyası okunur ve `veri` adlı bir DataFrame'e yüklenir.
+
+3. Veri ön işleme adımları yapılır. Hisse senedi fiyatlarının sütunlarındaki tırnak işaretleri kaldırılır ve bu sütunlar `float` veri tipine dönüştürülür.
+
+4. Gelecekteki fiyatı tahmin etmek için bir sütun oluşturulur. Bu sütun, mevcut günün kapanış fiyatının bir sonraki günün düşük fiyatı ile değiştirilmiş halidir. Böylece, bir önceki günün verilerine dayanarak bir sonraki günün fiyatını tahmin etmeye çalışacağız.
+
+5. `dropna()` yöntemi kullanılarak eksik değerlere sahip satırlar (yani, gelecekteki fiyatı olmayan tarihler) veriden çıkarılır.
+
+6. Model için bağımsız değişkenler (`X`) ve bağımlı değişken (`y`) seçilir. Bağımsız değişkenler, hisse senedi fiyatlarının açılış, düşük, yüksek ve kapanış değerlerini içerir. Bağımlı değişken ise gelecekteki fiyatları içeren `FuturePrice` sütunudur.
+
+7. `LinearRegression()` sınıfından bir model oluşturulur.
+
+8. `fit()` yöntemi kullanılarak model eğitilir. Eğitim için X ve y verileri kullanılır.
+
+9. Gelecekteki 200 verinin fiyatlarını tahmin etmek için `predict()` yöntemi kullanılır. Tahmin edilecek veriler, `gelecek_veri` adlı DataFrame'de saklanır.
+
+10. Son olarak, tahmin edilen fiyatlar `print()` fonksiyonuyla ekrana yazdırılır.
+
+Kodun bir konu anlatımı olarak, bu kodun temel olarak basit bir zaman serisi analizi ve makine öğrenimi kullanarak hisse senedi fiyatlarını tahmin etmek için bir örnek olduğunu belirtebiliriz. Bu tür bir model, finansal piyasalardaki gelecek fiyat değişimlerini tahmin etmek için kullanılabilir. Ancak, gerçek finansal verilerde bu tür basit modellerin başarısı sınırlı olabilir ve daha karmaşık modeller ve analiz teknikleri gerekebilir.

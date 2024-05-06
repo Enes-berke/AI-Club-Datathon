@@ -1,0 +1,50 @@
+==> Decision Tree Regressor: <== AÇIKLAMA
+
+
+
+Link -> https://chat.openai.com/share/a2f0f287-4a35-4ac8-9147-d43364e5c2c4
+
+
+
+Decision Tree Regressor, veri kümesindeki özelliklerin değerlerine göre bir karar ağacı oluşturan ve bu ağaç üzerinden tahminler yapabilen bir regresyon algoritmasıdır. Karar ağaçları, veri setindeki özelliklerin değerlerini kullanarak bir dizi karar kuralı oluşturur ve bu kuralların sonucunda veri setini belirli sınıflara veya değerlere ayırır. Her bir karar düğümü, bir özellik ve bu özelliğin belirli bir değeri ile ilişkilidir.
+
+Şimdi Decision Tree Regressor kullanarak gelecekteki fiyatları tahmin etmek için yazdığımız kodun detaylarını açıklayalım:
+
+1. **Modelin Oluşturulması ve Eğitilmesi:**
+```python
+from sklearn.tree import DecisionTreeRegressor
+
+# Modelin oluşturulması
+model = DecisionTreeRegressor()
+```
+Burada, `DecisionTreeRegressor` sınıfından bir model oluşturuyoruz. Varsayılan parametrelerle bir model oluşturuyoruz, ancak isterseniz bu parametreleri özelleştirebilirsiniz.
+
+2. **Modelin Eğitilmesi:**
+```python
+model.fit(X, y)
+```
+`fit` yöntemiyle, modeli bağımsız değişkenler (X) ve bağımlı değişkenler (y) üzerinde eğitiyoruz. Bu, modelin veri seti üzerinde örüntüleri öğrenmesini sağlar.
+
+3. **Gelecekteki Verilerin Tahmin Edilmesi:**
+```python
+gelecek_veri = X.tail(201)
+tahminler = model.predict(gelecek_veri)
+```
+`predict` yöntemiyle, modeli kullanarak gelecekteki verileri tahmin ediyoruz. Burada, en son 201 gözlemi kullanarak gelecekteki fiyatları tahmin ediyoruz.
+
+4. **RMSE Değerinin Hesaplanması:**
+```python
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y[-200:], tahminler[:-1])
+rmse = np.sqrt(mse)
+```
+Gerçek değerler ile tahmin edilen değerler arasındaki ortalama karesel hata (MSE) hesaplanır ve bu değerin karekökü alınarak kök ortalama kare hata (RMSE) elde edilir. Bu, modelin performansını ölçmek için kullanılır.
+
+5. **Sonuçların Yazdırılması:**
+```python
+print("Decision Tree Regressor ile Gelecekteki Fiyat Tahminleri:")
+np.set_printoptions(precision=7)
+print(tahminler)
+print("RMSE Değeri:", rmse)
+```
+Son olarak, tahmin edilen fiyatları ve RMSE değerini yazdırıyoruz. Tahminlerin formatını 7 basamaklı virgülden sonra biçimlendiriyoruz (`np.set_printoptions(precision=7)`). Bu, tahminlerin daha okunabilir olmasını sağlar.
